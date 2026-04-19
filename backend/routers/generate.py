@@ -4,7 +4,7 @@ from pathlib import Path
 from fastapi import APIRouter, BackgroundTasks
 
 from models.story import GenerateRequest, GenerateResponse, StoryJSON
-from services import groq_service, image_service, supabase_service
+from services import claude_service, image_service, supabase_service
 
 router = APIRouter()
 
@@ -93,7 +93,7 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
 
 @router.post("/generate", response_model=GenerateResponse)
 async def generate(req: GenerateRequest, background_tasks: BackgroundTasks) -> GenerateResponse:
-    story = await groq_service.generate_story(
+    story = await claude_service.generate_story(
         child_name=req.child_name,
         age=req.age,
         photo_url=req.photo_url,

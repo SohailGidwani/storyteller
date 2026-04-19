@@ -60,6 +60,7 @@ def _build_prompt(
     params: dict,
     templates: dict,
     adhd: bool,
+    gender: str = "girl",
 ) -> str:
     story = templates["story_types"][story_type]
     safety = "\n".join(f"- {rule}" for rule in templates["safety_rules"])
@@ -71,9 +72,12 @@ def _build_prompt(
             f"Delivery parameters have been shifted down one band. The values below already reflect this."
         )
 
+    pronouns = "he/him/his" if gender == "boy" else "she/her/hers"
+
     return f"""You are a children's storybook author. Generate a complete illustrated story as structured JSON.
 
-CHILD: {child_name}, age band {age_band}
+CHILD: {child_name}, age band {age_band}, gender: {gender}
+Use {pronouns} pronouns throughout the story.
 STORY TYPE: {story["label"]}
 SETTING: {story["setting"]}
 TONE: {story["tone"]}
@@ -154,6 +158,7 @@ async def generate_story(
     photo_url: str,
     story_type: str,
     adhd: bool = False,
+    gender: str = "girl",
 ) -> dict:
     """
     Call Claude and return a complete story dict with runtime fields injected.
@@ -162,7 +167,7 @@ async def generate_story(
     cognitive, templates = _load_configs()
     age_band = age_to_band(age)
     params = _get_effective_params(cognitive, age_band, adhd)
-    prompt = _build_prompt(child_name, age_band, story_type, params, templates, adhd)
+    prompt = _build_prompt(child_name, age_band, story_type, params, templates, adhd, gender)
 
     try:
         client = _get_client()
@@ -173,14 +178,14 @@ async def generate_story(
         )
         raw = response.content[0].text
 
-        # Strip accidental markdown fences if Claude adds them
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
                 raw = raw[4:]
 
         story = json.loads(raw.strip())
-    except Exception:
+    except Exception as e:
+        print(f"[claude_service] generation failed, using demo fallback: {e}")
         story = _load_demo_fallback(photo_url)
         return story
 

@@ -23,3 +23,22 @@ app.include_router(upload.router)
 @app.get("/health")
 async def health() -> dict:
     return {"ok": True}
+
+
+@app.get("/debug/groq")
+async def debug_groq() -> dict:
+    import os
+    from groq import AsyncGroq
+    key = os.environ.get("GROQ_API_KEY", "")
+    if not key:
+        return {"error": "GROQ_API_KEY not set"}
+    try:
+        client = AsyncGroq(api_key=key)
+        resp = await client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": "Say hello in JSON: {\"hello\": true}"}],
+            max_tokens=50,
+        )
+        return {"ok": True, "response": resp.choices[0].message.content}
+    except Exception as e:
+        return {"error": str(e)}

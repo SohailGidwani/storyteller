@@ -155,7 +155,8 @@ async def generate_story(child_name: str, age: int, photo_url: str, story_type: 
             if raw.startswith("json"):
                 raw = raw[4:]
         story = json.loads(raw.strip())
-    except Exception:
+    except Exception as e:
+        print(f"[groq_service] generation failed, using demo fallback: {e}")
         story = _load_demo_fallback(photo_url)
         return story
 
