@@ -53,3 +53,13 @@ export interface GenerateRequest {
   story_type: StoryType
   adhd?: boolean
 }
+
+export interface StoryCard {
+  story_id: string
+  status: StoryStatus
+  title: string
+  child_name: string
+  age_band: AgeBand
+  story_type: StoryType
+  photo_url: string | null
+}

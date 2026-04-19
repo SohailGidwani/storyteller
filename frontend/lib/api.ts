@@ -1,4 +1,4 @@
-import type { GenerateRequest, StoryJSON, StoryStatus } from './types'
+import type { GenerateRequest, StoryCard, StoryJSON, StoryStatus } from './types'
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
 
@@ -41,4 +41,19 @@ export async function healthCheck(): Promise<{ ok: true }> {
   const res = await fetch(`${BASE_URL}/health`)
   if (!res.ok) throw new Error('Backend unreachable')
   return res.json()
+}
+
+export async function listStories(): Promise<StoryCard[]> {
+  const res = await fetch(`${BASE_URL}/stories`, {
+    signal: AbortSignal.timeout(10_000),
+  })
+  if (!res.ok) return []
+  return res.json()
+}
+
+export async function deleteStory(storyId: string): Promise<void> {
+  await fetch(`${BASE_URL}/story/${storyId}`, {
+    method: 'DELETE',
+    signal: AbortSignal.timeout(10_000),
+  })
 }

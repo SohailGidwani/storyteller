@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import StoryCard from './StoryCard'
-import type { StoryJSON } from '@/lib/types'
+import type { StoryCard as StoryCardType } from '@/lib/types'
 
 interface LibraryProps {
-  stories: StoryJSON[]
+  stories: StoryCardType[]
+  onDeleted: (storyId: string) => void
 }
 
-export default function Library({ stories }: LibraryProps) {
+export default function Library({ stories, onDeleted }: LibraryProps) {
   return (
     <div className="grid grid-cols-3 gap-5 p-8">
       {/* Create new tile */}
@@ -19,7 +20,7 @@ export default function Library({ stories }: LibraryProps) {
       </Link>
 
       {stories.map((story) => (
-        <StoryCard key={story.story_id} story={story} />
+        <StoryCard key={story.story_id} story={story} onDeleted={onDeleted} />
       ))}
     </div>
   )
