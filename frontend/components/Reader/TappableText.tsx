@@ -17,6 +17,7 @@ export default function TappableText({ block, entities, onEntityTap }: TappableT
       {segments.map((seg, i) =>
         seg.entity ? (
           <button
+            type="button"
             key={i}
             onClick={(e) => {
               e.stopPropagation()
