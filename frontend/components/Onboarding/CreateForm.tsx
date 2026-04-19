@@ -21,6 +21,7 @@ export default function CreateForm() {
   const [name, setName] = useState('')
   const [age, setAge] = useState(5)
   const [storyType, setStoryType] = useState<StoryType>('fantasy_adventure')
+  const [gender, setGender] = useState<'boy' | 'girl'>('girl')
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<{ photo?: string; name?: string; submit?: string }>({})
 
@@ -59,6 +60,7 @@ export default function CreateForm() {
         age,
         photo_url,
         story_type: storyType,
+        gender,
         adhd: false,
       })
       if (photoPreview) URL.revokeObjectURL(photoPreview)
@@ -122,6 +124,27 @@ export default function CreateForm() {
         {errors.name && (
           <p className="font-nunito text-red-500 text-sm mt-1">{errors.name}</p>
         )}
+      </div>
+
+      {/* Gender */}
+      <div>
+        <label className="font-lora text-sienna text-xl block mb-3">Gender</label>
+        <div className="flex gap-4">
+          {(['girl', 'boy'] as const).map((g) => (
+            <button
+              key={g}
+              type="button"
+              onClick={() => setGender(g)}
+              className={`flex-1 py-3 rounded-xl border-2 font-nunito text-lg transition-colors ${
+                gender === g
+                  ? 'border-amber bg-amber/10 text-sienna'
+                  : 'border-parchment text-ink/60'
+              }`}
+            >
+              {g === 'girl' ? '👧 Girl' : '👦 Boy'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Age */}

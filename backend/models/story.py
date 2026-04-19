@@ -62,6 +62,7 @@ class GenerateRequest(BaseModel):
         "superhero_mission",
         "royal_tale",
     ]
+    gender: Literal["boy", "girl"] = "girl"
     adhd: bool = False
 
 

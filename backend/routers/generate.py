@@ -45,12 +45,16 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
 
         if location_key == "hero":
             story["hero_image_url"] = url
+            await supabase_service.update_story(story_id, story)
             return
 
-        parts = location_key.split("_", 2)
-        if parts[0] == "scene":
-            _, scene_id, img_tag = location_key.split("_", 2)
-            img_n = int(img_tag.replace("img", "")) - 1
+        if location_key.startswith("scene_"):
+            # location_key = "scene_{scene_id}_img{n}" e.g. "scene_scene_1_img1"
+            remainder = location_key[len("scene_"):]        # "scene_1_img1"
+            img_idx = remainder.rfind("_img")               # finds last "_img"
+            scene_id = remainder[:img_idx]                  # "scene_1"
+            img_tag = remainder[img_idx + 1:]               # "img1"
+            img_n = int(img_tag.replace("img", "")) - 1     # 0-indexed
             count = 0
             for scene in story["scenes"]:
                 if scene["scene_id"] == scene_id:
@@ -60,8 +64,13 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
                                 block["image_url"] = url
                                 break
                             count += 1
-        elif parts[0] == "entity":
-            _, scene_id, entity_id = location_key.split("_", 2)
+
+        elif location_key.startswith("entity_"):
+            # location_key = "entity_{scene_id}_{entity_id}" e.g. "entity_scene_1_ent_gate_1"
+            remainder = location_key[len("entity_"):]       # "scene_1_ent_gate_1"
+            parts = remainder.split("_", 2)                 # ["scene", "1", "ent_gate_1"]
+            scene_id = f"{parts[0]}_{parts[1]}"             # "scene_1"
+            entity_id = parts[2]                            # "ent_gate_1"
             for scene in story["scenes"]:
                 if scene["scene_id"] == scene_id:
                     for ent in scene["clickable_entities"]:
@@ -90,6 +99,7 @@ async def generate(req: GenerateRequest, background_tasks: BackgroundTasks) -> G
         photo_url=req.photo_url,
         story_type=req.story_type,
         adhd=req.adhd,
+        gender=req.gender,
     )
 
     # Save with status "generating" — images not ready yet

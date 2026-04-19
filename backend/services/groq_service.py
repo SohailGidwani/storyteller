@@ -57,7 +57,7 @@ def _get_effective_params(cognitive: dict, age_band: str, adhd: bool) -> dict:
             base[param] = delivery[param]
     return base
 
-def _build_prompt(child_name: str, age_band: str, story_type: str, params: dict, templates: dict, adhd: bool) -> str:
+def _build_prompt(child_name: str, age_band: str, story_type: str, params: dict, templates: dict, adhd: bool, gender: str = "girl") -> str:
     story = templates["story_types"][story_type]
     safety = "\n".join(f"- {rule}" for rule in templates["safety_rules"])
     adhd_note = ""
@@ -69,7 +69,8 @@ def _build_prompt(child_name: str, age_band: str, story_type: str, params: dict,
 
     return f"""You are a children's storybook author. Generate a complete illustrated story as structured JSON.
 
-CHILD: {child_name}, age band {age_band}
+CHILD: {child_name}, age band {age_band}, gender: {gender}
+Use {"he/him/his" if gender == "boy" else "she/her/hers"} pronouns throughout the story.
 STORY TYPE: {story["label"]}
 SETTING: {story["setting"]}
 TONE: {story["tone"]}
@@ -139,12 +140,12 @@ def _load_demo_fallback(photo_url: str) -> dict:
     return story
 
 
-async def generate_story(child_name: str, age: int, photo_url: str, story_type: str, adhd: bool = False) -> dict:
+async def generate_story(child_name: str, age: int, photo_url: str, story_type: str, adhd: bool = False, gender: str = "girl") -> dict:
     """Generate story via Groq. Falls back to demo_story.json on any failure."""
     cognitive, templates = _load_configs()
     age_band = age_to_band(age)
     params = _get_effective_params(cognitive, age_band, adhd)
-    prompt = _build_prompt(child_name, age_band, story_type, params, templates, adhd)
+    prompt = _build_prompt(child_name, age_band, story_type, params, templates, adhd, gender)
 
     try:
         client = _get_client()

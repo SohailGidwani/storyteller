@@ -188,6 +188,40 @@ export default function ReaderPage() {
         />
       </div>
 
+      {/* Navigation arrows */}
+      <div className="flex items-center justify-between px-8 py-4 shrink-0 border-t border-parchment">
+        <button
+          type="button"
+          onClick={() => dispatch({ type: 'PREV_SCENE' })}
+          disabled={currentSceneIndex === 0}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-parchment disabled:opacity-30 active:bg-amber/20 transition-colors text-ink text-xl"
+          aria-label="Previous scene"
+        >
+          ←
+        </button>
+
+        {/* Dot indicators */}
+        <div className="flex gap-2">
+          {story.scenes.map((_, i) => (
+            <div
+              key={i}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                i === currentSceneIndex ? 'bg-amber' : 'bg-parchment'
+              }`}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={handleNext}
+          className="w-12 h-12 flex items-center justify-center rounded-full bg-parchment active:bg-amber/20 transition-colors text-ink text-xl"
+          aria-label={isLastScene ? 'Finish' : 'Next scene'}
+        >
+          {isLastScene ? '✓' : '→'}
+        </button>
+      </div>
+
       <SidePanel
         entity={activeEntity}
         onClose={() => dispatch({ type: 'CLOSE_ENTITY' })}

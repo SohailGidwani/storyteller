@@ -51,6 +51,7 @@ export interface GenerateRequest {
   age: number
   photo_url: string
   story_type: StoryType
+  gender: 'boy' | 'girl'
   adhd?: boolean
 }
 
