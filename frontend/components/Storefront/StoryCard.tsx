@@ -79,14 +79,14 @@ export default function StoryCard({ story, onDeleted }: StoryCardProps) {
         </div>
       </Link>
 
-      {/* Delete button — appears on hover, top-right corner */}
+      {/* Delete button — always visible, top-right corner */}
       {!isGenerating && (
         <button
           type="button"
           onClick={handleDelete}
           disabled={deleting}
           aria-label="Delete story"
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center text-ink/40 hover:text-red-500 hover:bg-white opacity-0 group-hover:opacity-100 transition-all z-20 shadow-sm"
+          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center text-ink/40 hover:text-red-500 active:text-red-500 hover:bg-white transition-all z-20 shadow-sm"
         >
           {deleting ? (
             <span className="text-xs">…</span>
