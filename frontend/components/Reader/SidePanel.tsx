@@ -53,7 +53,10 @@ export default function SidePanel({ entity, onClose }: SidePanelProps) {
             <img
               src={displayed.image_url}
               alt={displayed.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+              }}
             />
           ) : (
             <BookIcon />
