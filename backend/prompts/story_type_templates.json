@@ -1,0 +1,83 @@
+{
+  "_comment": "Story type templates. Each type defines vocabulary, setting context, and safety rules. Claude prompt builder merges this with the age band config to assemble the system prompt.",
+
+  "story_types": {
+    "fantasy_adventure": {
+      "label": "Fantasy Adventure",
+      "setting": "enchanted forests, castles, friendly magic, hidden paths",
+      "vocabulary": ["castle", "forest", "dragon", "wizard", "tower", "crystal cave", "enchanted", "quest", "magical", "kingdom"],
+      "default_style": "photorealism",
+      "default_outfit": "a simple cream-colored tunic with a brown leather belt and small brown boots",
+      "tone": "wonder, curiosity, gentle courage"
+    },
+    "space_explorer": {
+      "label": "Space Explorer",
+      "setting": "planets, moonbases, friendly robots, starships",
+      "vocabulary": ["moonbase", "robot", "comet", "star map", "nebula", "space whale", "astronaut", "spacecraft", "galaxy", "orbit"],
+      "default_style": "photorealism",
+      "default_outfit": "a white and blue spacesuit with an orange helmet visor pushed up and magnetic boots",
+      "tone": "discovery, teamwork, scientific wonder"
+    },
+    "animal_quest": {
+      "label": "Animal Quest",
+      "setting": "talking animals, nature adventures, forests and rivers",
+      "vocabulary": ["burrow", "river", "meadow", "hollow tree", "berry patch", "den", "paw prints", "stream", "nest", "clearing"],
+      "default_style": "photorealism",
+      "default_outfit": "a green vest over a white shirt with khaki shorts and hiking boots",
+      "tone": "friendship, nature appreciation, gentle problem-solving"
+    },
+    "superhero_mission": {
+      "label": "Superhero Mission",
+      "setting": "kid-friendly heroics, teamwork, helping the community",
+      "vocabulary": ["headquarters", "shield", "cape", "gadget", "force field", "sidekick", "mission", "power", "rescue", "training"],
+      "default_style": "photorealism",
+      "default_outfit": "a bright red cape over a blue shirt with a silver star emblem, dark pants and sneakers",
+      "tone": "bravery, teamwork, helping others"
+    },
+    "royal_tale": {
+      "label": "Royal Tale",
+      "setting": "palaces, gardens, elegant adventures, royal festivities",
+      "vocabulary": ["palace", "garden", "throne", "crown", "rose maze", "fountain", "ballroom", "chandelier", "tapestry", "courtyard"],
+      "default_style": "photorealism",
+      "default_outfit": "a velvet royal blue tunic with gold trim, a small silver circlet, and polished boots",
+      "tone": "elegance, kindness, responsibility"
+    }
+  },
+
+  "safety_rules": [
+    "No violence or physical harm to any character.",
+    "No romance or romantic relationships.",
+    "No free-prompting from users. Story content is fully generated, not user-directed mid-story.",
+    "Only pre-approved entity types: character, location, object, creature.",
+    "All stories end with a happy or hopeful resolution.",
+    "No scary imagery. Challenges are solved through cleverness, kindness, or courage.",
+    "No real-world brand names or copyrighted characters."
+  ],
+
+  "style_blocks": {
+    "photorealism": {
+      "rendering": "cinematic photorealistic illustration, digital art with photographic quality",
+      "palette": "warm earth tones, amber highlights, deep forest greens, cream whites",
+      "lighting": "golden hour side lighting from the left, soft diffused shadows, gentle lens flare",
+      "atmosphere": "soft depth of field, slight haze in background, dreamy but grounded",
+      "camera": "medium shot, eye-level with the child, shallow depth of field, 85mm portrait lens feel",
+      "texture": "smooth skin rendering, fabric has visible weave, natural materials look tactile"
+    },
+    "watercolor": {
+      "rendering": "hand-painted watercolor illustration, children's storybook art, visible brush strokes",
+      "palette": "soft pastels, muted pinks and blues, warm yellow accents, white paper showing through",
+      "lighting": "flat soft lighting, no harsh shadows, gentle warmth throughout",
+      "atmosphere": "whimsical, gentle, cozy, slightly dreamy with soft edges",
+      "camera": "slightly elevated view looking down at the child, wide framing, storybook page composition",
+      "texture": "watercolor paper grain visible, paint bleeds at edges, soft wet-on-wet blending"
+    },
+    "anime": {
+      "rendering": "anime illustration, Studio Ghibli inspired, clean cel-shaded style",
+      "palette": "vibrant saturated colors, lush greens, bright sky blues, warm sunset oranges",
+      "lighting": "bright and even with dramatic rim lighting on characters, Ghibli cloud lighting",
+      "atmosphere": "sense of wonder, vast skies, detailed nature, wind-swept feeling",
+      "camera": "cinematic wide shot mixed with character close-ups, dynamic composition",
+      "texture": "clean line art, smooth color fills, detailed background painting, soft gradients in sky"
+    }
+  }
+}

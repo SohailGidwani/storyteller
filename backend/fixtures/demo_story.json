@@ -1,0 +1,117 @@
+{
+  "story_id": "demo",
+  "status": "complete",
+  "photo_url": "",
+  "title": "Siena and the Silver Gate",
+  "child_name": "Siena",
+  "age_band": "4-5",
+  "act_structure": "3_act",
+  "story_type": "fantasy_adventure",
+  "scenes": [
+    {
+      "scene_id": "scene_1",
+      "act": 1,
+      "act_name": "The World",
+      "title": "The Shimmering Path",
+      "text_blocks": [
+        { "type": "text", "content": "Siena found a shimmering path." },
+        { "type": "image_slot", "prompt": "A child discovering a glowing path beside a rose garden, soft morning light", "alt": "Siena on the shimmering path", "image_url": null },
+        { "type": "text", "content": "A silver gate stood at the end." },
+        { "type": "image_slot", "prompt": "An ornate silver gate at the end of a glowing path, roses on both sides, morning mist", "alt": "The silver gate", "image_url": null }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_gate_1",
+          "word_in_text": "silver gate",
+          "name": "The Silver Gate",
+          "type": "object",
+          "lore": "A gate that only opens when you sing.",
+          "image_prompt": "An ornate silver gate covered in musical note engravings, ivy on the sides",
+          "image_url": null,
+          "questions": ["What song does it need?"]
+        },
+        {
+          "entity_id": "ent_path_1",
+          "word_in_text": "shimmering path",
+          "name": "The Shimmering Path",
+          "type": "location",
+          "lore": "A path that glows at night.",
+          "image_prompt": "A winding path made of glowing stones through a garden, fireflies around it",
+          "image_url": null,
+          "questions": ["Where does it go?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_2" }
+    },
+    {
+      "scene_id": "scene_2",
+      "act": 2,
+      "act_name": "The Problem",
+      "title": "The Locked Gate",
+      "text_blocks": [
+        { "type": "text", "content": "The gate would not open." },
+        { "type": "image_slot", "prompt": "A child pushing on a large silver gate that won't budge, determined expression", "alt": "Siena tries the gate", "image_url": null },
+        { "type": "text", "content": "A small fox sat beside it." },
+        { "type": "image_slot", "prompt": "A friendly small red fox sitting beside a silver gate, looking up expectantly", "alt": "The fox by the gate", "image_url": null }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_fox_1",
+          "word_in_text": "fox",
+          "name": "The Little Fox",
+          "type": "creature",
+          "lore": "A friendly fox who knows every path.",
+          "image_prompt": "A small red fox with bright eyes sitting in a garden clearing",
+          "image_url": null,
+          "questions": ["What does the fox know?"]
+        },
+        {
+          "entity_id": "ent_gate_2",
+          "word_in_text": "gate",
+          "name": "The Silver Gate",
+          "type": "object",
+          "lore": "A gate that only opens when you sing.",
+          "image_prompt": "Close-up of silver gate with musical note engravings glowing faintly",
+          "image_url": null,
+          "questions": ["How do you open it?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_3" }
+    },
+    {
+      "scene_id": "scene_3",
+      "act": 3,
+      "act_name": "The Fix",
+      "title": "The Song",
+      "text_blocks": [
+        { "type": "text", "content": "Siena sang her garden song." },
+        { "type": "image_slot", "prompt": "A child singing with eyes closed, musical notes floating in the air, flowers blooming", "alt": "Siena sings", "image_url": null },
+        { "type": "text", "content": "The gate opened. Flowers came back." },
+        { "type": "image_slot", "prompt": "A silver gate swinging open revealing a garden full of colorful flowers, golden light pouring through", "alt": "The gate opens and flowers return", "image_url": null }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_song_1",
+          "word_in_text": "garden song",
+          "name": "The Garden Song",
+          "type": "object",
+          "lore": "A song that makes flowers grow.",
+          "image_prompt": "Musical notes floating among blooming flowers, soft golden light",
+          "image_url": null,
+          "questions": ["What are the words?"]
+        },
+        {
+          "entity_id": "ent_flowers_1",
+          "word_in_text": "Flowers",
+          "name": "The Garden Flowers",
+          "type": "location",
+          "lore": "Flowers that dance when they hear music.",
+          "image_prompt": "A garden of colorful flowers swaying as if dancing, petals catching light",
+          "image_url": null,
+          "questions": ["What is their favorite song?"]
+        }
+      ],
+      "navigation": { "next_scene_id": null }
+    }
+  ]
+}
