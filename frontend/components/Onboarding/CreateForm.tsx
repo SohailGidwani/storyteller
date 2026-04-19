@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { StoryType } from '@/lib/types'
 import { uploadPhoto, generateStory } from '@/lib/api'
@@ -24,9 +24,16 @@ export default function CreateForm() {
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<{ photo?: string; name?: string; submit?: string }>({})
 
+  useEffect(() => {
+    return () => {
+      if (photoPreview) URL.revokeObjectURL(photoPreview)
+    }
+  }, [photoPreview])
+
   function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    if (photoPreview) URL.revokeObjectURL(photoPreview)
     setPhotoFile(file)
     setPhotoPreview(URL.createObjectURL(file))
     setErrors((prev) => ({ ...prev, photo: undefined }))
@@ -54,6 +61,7 @@ export default function CreateForm() {
         story_type: storyType,
         adhd: false,
       })
+      if (photoPreview) URL.revokeObjectURL(photoPreview)
       router.push(`/reader/${story_id}`)
     } catch {
       setErrors({ submit: 'Something went wrong. Please try again.' })

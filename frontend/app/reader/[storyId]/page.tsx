@@ -15,6 +15,7 @@ type ReaderState = {
 
 type ReaderAction =
   | { type: 'STORY_LOADED'; story: StoryJSON }
+  | { type: 'STORY_UPDATED'; story: StoryJSON }
   | { type: 'NEXT_SCENE' }
   | { type: 'PREV_SCENE' }
   | { type: 'OPEN_ENTITY'; entity: ClickableEntity }
@@ -39,6 +40,12 @@ function reducer(state: ReaderState, action: ReaderAction): ReaderState {
       }
     case 'OPEN_ENTITY':
       return { ...state, activeEntity: action.entity }
+    case 'STORY_UPDATED':
+      return {
+        ...state,
+        story: action.story,
+        currentSceneIndex: Math.min(state.currentSceneIndex, action.story.scenes.length - 1),
+      }
     case 'CLOSE_ENTITY':
       return { ...state, activeEntity: null }
     default:
@@ -84,24 +91,33 @@ export default function ReaderPage() {
   })
 
   useEffect(() => {
+    let cancelled = false
     let polling: ReturnType<typeof setInterval> | null = null
 
     async function load() {
       try {
         const story = storyId === 'demo' ? await loadDemoStory() : await getStory(storyId)
+        if (cancelled) return
 
         if (story.status === 'failed') {
-          dispatch({ type: 'STORY_LOADED', story: await loadDemoStory() })
+          const demo = await loadDemoStory()
+          if (!cancelled) dispatch({ type: 'STORY_LOADED', story: demo })
         } else if (story.status === 'generating') {
           dispatch({ type: 'STORY_LOADED', story })
           polling = setInterval(async () => {
+            if (cancelled) {
+              clearInterval(polling!)
+              return
+            }
             try {
               const updated = await getStory(storyId)
               if (updated.status !== 'generating') {
                 clearInterval(polling!)
                 polling = null
-                const final = updated.status === 'failed' ? await loadDemoStory() : updated
-                dispatch({ type: 'STORY_LOADED', story: final })
+                if (!cancelled) {
+                  const final = updated.status === 'failed' ? await loadDemoStory() : updated
+                  dispatch({ type: 'STORY_UPDATED', story: final })
+                }
               }
             } catch {
               // keep polling
@@ -111,16 +127,20 @@ export default function ReaderPage() {
           dispatch({ type: 'STORY_LOADED', story })
         }
       } catch {
-        try {
-          dispatch({ type: 'STORY_LOADED', story: await loadDemoStory() })
-        } catch {
-          // nothing to show
+        if (!cancelled) {
+          try {
+            const demo = await loadDemoStory()
+            if (!cancelled) dispatch({ type: 'STORY_LOADED', story: demo })
+          } catch {
+            // nothing to show
+          }
         }
       }
     }
 
     load()
     return () => {
+      cancelled = true
       if (polling) clearInterval(polling)
     }
   }, [storyId])
