@@ -10,7 +10,7 @@ app = FastAPI(title="Storyworld API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],  # open for iPad demo — tighten post-hackathon
     allow_methods=["*"],
     allow_headers=["*"],
 )
