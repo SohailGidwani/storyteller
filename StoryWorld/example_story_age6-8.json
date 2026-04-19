@@ -1,0 +1,260 @@
+{
+  "title": "Siena and the Starfall Compass",
+  "child_name": "Siena",
+  "age_band": "6-8",
+  "act_structure": "5_act",
+  "story_type": "fantasy_adventure",
+  "scenes": [
+    {
+      "scene_id": "scene_1",
+      "act": 1,
+      "act_name": "Ordinary World",
+      "title": "The Old Garden",
+      "text_blocks": [
+        { "type": "text", "content": "Siena loved the garden behind the old stone wall. She visited every morning to water the roses and talk to the bees. The sunlight made the petals glow like small lanterns. Everything felt safe and familiar here." },
+        { "type": "image_slot", "prompt": "A child watering roses in a walled garden, morning sunlight streaming through, bees hovering near flowers, old stone wall with ivy", "alt": "Siena in her garden" },
+        { "type": "text", "content": "But today something was different. A compass made of pale crystal sat on the garden bench. It had not been there yesterday, and its needle spun slowly without stopping. Siena picked it up and felt it hum in her hand." },
+        { "type": "image_slot", "prompt": "A crystal compass sitting on a stone garden bench, its needle spinning with a faint glow, rose petals scattered around it", "alt": "The crystal compass on the bench" }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_compass_1",
+          "word_in_text": "compass",
+          "name": "The Starfall Compass",
+          "type": "object",
+          "lore": "A compass that does not point north. Instead, it points toward whatever the holder needs most. It was made from a fallen star that landed in the garden long ago.",
+          "image_prompt": "A palm-sized crystal compass with a glowing needle, star fragments embedded in its frame, faint light emanating from within",
+          "questions": ["What does the compass point toward?", "Where did the fallen star come from?", "Can anyone use it or only Siena?"]
+        },
+        {
+          "entity_id": "ent_garden_1",
+          "word_in_text": "garden",
+          "name": "The Walled Garden",
+          "type": "location",
+          "lore": "An ancient garden surrounded by stone walls covered in ivy. The roses here bloom in every season, which the neighbors think is strange. The soil has a faint shimmer if you dig deep enough.",
+          "image_prompt": "An old walled garden with blooming roses of many colors, ivy-covered stone walls, a weathered bench, morning light filtering through",
+          "questions": ["Why do the roses bloom all year?", "What makes the soil shimmer?", "Who built the stone walls?"]
+        },
+        {
+          "entity_id": "ent_bees_1",
+          "word_in_text": "bees",
+          "name": "The Garden Bees",
+          "type": "creature",
+          "lore": "These bees have golden stripes that glow faintly at dusk. They never sting and they hum melodies instead of buzzing. Some say they are the garden's oldest guardians.",
+          "image_prompt": "Golden-striped bees with faintly glowing bodies hovering around colorful roses, warm light, close-up detail",
+          "questions": ["What melodies do the bees hum?", "How long have they guarded the garden?", "Do they communicate with Siena?"]
+        },
+        {
+          "entity_id": "ent_wall_1",
+          "word_in_text": "stone wall",
+          "name": "The Old Stone Wall",
+          "type": "location",
+          "lore": "The wall is older than anyone in town remembers. Its stones are smooth and warm to the touch even in winter. If you press your ear against it, you can hear a faint heartbeat.",
+          "image_prompt": "An ancient stone wall covered in thick ivy, warm-toned stones with moss in the cracks, golden sunlight on the surface",
+          "questions": ["Whose heartbeat is inside the wall?", "How old is the wall?", "What happens if you knock on it?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_2" }
+    },
+    {
+      "scene_id": "scene_2",
+      "act": 2,
+      "act_name": "The Call",
+      "title": "The Compass Points",
+      "text_blocks": [
+        { "type": "text", "content": "The compass needle stopped spinning and pointed straight at the stone wall. Siena walked closer and noticed a crack she had never seen before. Through the crack, she could see a faint blue light pulsing like a slow heartbeat." },
+        { "type": "text", "content": "She pressed her hand against the wall, and the stones shifted apart like a door opening. Behind the wall was a forest that should not have been there. The trees had silver bark and leaves that chimed in the wind like tiny bells." },
+        { "type": "image_slot", "prompt": "A stone wall opening to reveal a forest with silver-barked trees, blue light pulsing from within, leaves that look like tiny bells, a child standing at the threshold", "alt": "The wall opens to a silver forest" }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_forest_1",
+          "word_in_text": "forest",
+          "name": "The Silver Forest",
+          "type": "location",
+          "lore": "A forest where every tree has bark like polished silver. The leaves are shaped like bells and ring softly when the wind blows. The forest only appears to someone carrying a star compass.",
+          "image_prompt": "A forest of trees with polished silver bark, bell-shaped leaves catching light, blue luminescence on the ground, mystical atmosphere",
+          "questions": ["Why can only compass holders see the forest?", "What animals live here?", "Does the forest move or stay in one place?"]
+        },
+        {
+          "entity_id": "ent_crack_1",
+          "word_in_text": "crack",
+          "name": "The Wall Gate",
+          "type": "object",
+          "lore": "The crack in the wall is actually a gate that has been sealed for decades. It responds to star energy, which is why the compass activated it. Once opened, it stays open until sundown.",
+          "image_prompt": "A crack in an ancient stone wall with blue light streaming through, stones slightly parted like a door ajar",
+          "questions": ["What sealed the gate?", "What happens at sundown?", "Has anyone else opened it before?"]
+        },
+        {
+          "entity_id": "ent_bells_1",
+          "word_in_text": "bells",
+          "name": "The Bell Leaves",
+          "type": "object",
+          "lore": "Each leaf plays a different note when the wind moves it. Together, the whole forest creates a melody that changes with the seasons. In winter, the song is slow and deep. In spring, it is fast and bright.",
+          "image_prompt": "Close-up of translucent bell-shaped leaves hanging from silver branches, catching light and appearing to vibrate with sound",
+          "questions": ["What song are they playing now?", "Can you take a leaf with you?", "Do they play at night too?"]
+        },
+        {
+          "entity_id": "ent_light_1",
+          "word_in_text": "blue light",
+          "name": "The Star Pulse",
+          "type": "object",
+          "lore": "The blue light is star energy left over from the same fallen star that made the compass. It pulses like a heartbeat because the star is still alive, just in a different form. It guides those who follow it.",
+          "image_prompt": "A pulsing blue orb of light floating near the ground in a mystical forest, casting gentle blue shadows on silver tree trunks",
+          "questions": ["Is the star alive?", "Where is it guiding Siena?", "Can other people see the light?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_3" }
+    },
+    {
+      "scene_id": "scene_3",
+      "act": 3,
+      "act_name": "Rising Challenge",
+      "title": "The Fading Bridge",
+      "text_blocks": [
+        { "type": "text", "content": "The compass led Siena deeper into the Silver Forest until she reached a river. The water was dark and moved fast. A bridge made of woven light stretched across it, but the light was flickering and fading at the far end." },
+        { "type": "text", "content": "A small owl with feathers like moonlight landed on a branch beside her. It tilted its head and spoke in a soft voice. It said the bridge was losing its star energy and would vanish before nightfall. Someone needed to carry the compass to the other side to recharge it." },
+        { "type": "image_slot", "prompt": "A child standing at the edge of a dark river, a bridge made of woven light stretching across it but flickering at the far end, a small silver owl perched on a nearby branch", "alt": "Siena at the fading bridge with the owl" }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_owl_1",
+          "word_in_text": "owl",
+          "name": "Luna the Moon Owl",
+          "type": "creature",
+          "lore": "Luna is a tiny owl with feathers that reflect moonlight. She has watched over the Silver Forest for longer than anyone can count. She speaks only the truth, though sometimes her truths are riddles.",
+          "image_prompt": "A small owl with iridescent silver-white feathers perched on a silver branch, large luminous eyes, moonlight reflecting off its plumage",
+          "questions": ["How old is Luna?", "What riddles does she tell?", "Does she ever leave the forest?"]
+        },
+        {
+          "entity_id": "ent_bridge_1",
+          "word_in_text": "bridge",
+          "name": "The Light Bridge",
+          "type": "object",
+          "lore": "The bridge is made of woven starlight, strong enough to walk on when fully charged. It connects the Silver Forest to the Star Hollow on the other side. Without star energy, it fades like morning fog.",
+          "image_prompt": "A bridge made of interwoven strands of golden and white light spanning a dark river, some strands flickering and fading",
+          "questions": ["Who built the light bridge?", "What is the Star Hollow?", "How often does it need recharging?"]
+        },
+        {
+          "entity_id": "ent_river_1",
+          "word_in_text": "river",
+          "name": "The Dark River",
+          "type": "location",
+          "lore": "This river carries memories instead of water. If you look into it, you see moments from the past flowing by like reflections. It is harmless but very cold, and no one has ever found where it begins.",
+          "image_prompt": "A dark flowing river with faint images visible beneath the surface like memories, silver forest on both banks, mysterious atmosphere",
+          "questions": ["Whose memories are in the river?", "What would Siena see if she looked in?", "Where does the river go?"]
+        },
+        {
+          "entity_id": "ent_starlight_1",
+          "word_in_text": "light",
+          "name": "Woven Starlight",
+          "type": "object",
+          "lore": "Starlight in the Silver Forest can be woven like thread. The forest creatures learned to braid it into bridges, ladders, and shelters. It is warm to the touch and hums quietly when you walk on it.",
+          "image_prompt": "Close-up of luminous strands of starlight being woven together like golden thread, warm glow, against a dark background",
+          "questions": ["Who taught the creatures to weave light?", "Can Siena learn to weave it?", "What else can you make from starlight?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_4" }
+    },
+    {
+      "scene_id": "scene_4",
+      "act": 4,
+      "act_name": "The Climax",
+      "title": "Crossing",
+      "text_blocks": [
+        { "type": "text", "content": "Siena stepped onto the bridge. It swayed under her feet but held firm. The compass glowed brighter with each step, feeding energy into the fading strands of light beneath her. Halfway across, the bridge flickered hard and a section went dark." },
+        { "type": "text", "content": "She could feel the gap where the light had vanished. Luna flew ahead and hovered over the dark spot, her feathers casting just enough glow to see. Siena held the compass out and whispered to it. The needle spun once and a beam of blue light shot down, reweaving the broken section strand by strand." },
+        { "type": "image_slot", "prompt": "A child walking across a bridge of woven light over a dark river, holding a glowing crystal compass that shoots a beam of blue light downward repairing a dark gap in the bridge, a small silver owl flying ahead", "alt": "Siena repairs the bridge with the compass" }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_beam_1",
+          "word_in_text": "beam of blue light",
+          "name": "Compass Beam",
+          "type": "object",
+          "lore": "When the compass is held with purpose and spoken to gently, it releases stored star energy as a focused beam. The beam can repair anything made of starlight. It draws from the compass holder's courage, not from a battery.",
+          "image_prompt": "A focused beam of brilliant blue light shooting from a crystal compass downward, illuminating strands of woven light, particles of star energy swirling",
+          "questions": ["Does using the beam tire Siena out?", "What else can the beam repair?", "What if someone without courage tried to use it?"]
+        },
+        {
+          "entity_id": "ent_gap_1",
+          "word_in_text": "dark spot",
+          "name": "The Broken Section",
+          "type": "location",
+          "lore": "The oldest part of the bridge, where the starlight was woven first and has thinned the most. Every bridge has a weakest point. The Dark River below this section runs fastest, carrying the oldest memories.",
+          "image_prompt": "A gap in a bridge of woven light where strands have faded to darkness, dark water rushing below, surrounding strands flickering",
+          "questions": ["What are the oldest memories below?", "Will the repair last forever?", "Are there other weak spots?"]
+        },
+        {
+          "entity_id": "ent_luna_2",
+          "word_in_text": "Luna",
+          "name": "Luna the Moon Owl",
+          "type": "creature",
+          "lore": "Luna positions herself wherever light is needed most. Her feathers can store a small amount of moonlight and release it slowly. She has guided many travelers across this bridge, but none have ever recharged it before.",
+          "image_prompt": "A small silver owl hovering in darkness, feathers releasing a soft silvery glow, illuminating the space around it",
+          "questions": ["Has Luna ever failed to guide someone?", "How does she store moonlight?", "Why does she help travelers?"]
+        },
+        {
+          "entity_id": "ent_whisper_1",
+          "word_in_text": "whispered",
+          "name": "Star Whisper",
+          "type": "object",
+          "lore": "Speaking softly to the compass is how you activate its deeper powers. Shouting does nothing. The compass responds to intention and gentleness, not force. This is why the fallen star chose to become a compass rather than a weapon.",
+          "image_prompt": "Abstract visualization of gentle sound waves meeting a glowing crystal compass, soft blue ripples emanating outward",
+          "questions": ["What words did Siena whisper?", "Can you whisper the wrong thing?", "Why does gentleness work better than force?"]
+        }
+      ],
+      "navigation": { "next_scene_id": "scene_5" }
+    },
+    {
+      "scene_id": "scene_5",
+      "act": 5,
+      "act_name": "Return",
+      "title": "The Star Hollow",
+      "text_blocks": [
+        { "type": "text", "content": "Siena reached the other side. The Star Hollow was a clearing where the ground was covered in soft moss that glowed faintly blue. In the center stood a small stone pedestal with an empty notch shaped exactly like the compass. She understood now. The compass belonged here." },
+        { "type": "text", "content": "She placed the compass in the notch. The blue light rushed outward in a wave, recharging the bridge completely. The bell leaves rang out in a clear melody. Luna landed on Siena's shoulder and hooted softly. The forest was safe again, and the garden wall would always have a door for her." },
+        { "type": "image_slot", "prompt": "A child placing a crystal compass into a stone pedestal in a glowing moss clearing, a wave of blue light expanding outward, silver trees with bell leaves ringing, a small owl on the child's shoulder", "alt": "Siena places the compass and restores the forest" }
+      ],
+      "clickable_entities": [
+        {
+          "entity_id": "ent_hollow_1",
+          "word_in_text": "Star Hollow",
+          "name": "The Star Hollow",
+          "type": "location",
+          "lore": "The exact spot where the star fell long ago. The moss grew from the star's energy and has glowed ever since. The pedestal was carved by the forest creatures to hold the compass when it returned. They have been waiting for someone brave enough to bring it back.",
+          "image_prompt": "A circular forest clearing with blue-glowing moss covering the ground, a small stone pedestal in the center, silver trees forming a ring around it, ethereal atmosphere",
+          "questions": ["How long were the creatures waiting?", "Will another star ever fall here?", "Can Siena visit the Hollow again?"]
+        },
+        {
+          "entity_id": "ent_pedestal_1",
+          "word_in_text": "pedestal",
+          "name": "The Star Pedestal",
+          "type": "object",
+          "lore": "A stone pedestal carved by forest creatures using only moonlight and patience. The notch at its top is the exact shape of the Starfall Compass. When the compass is placed, it completes a circuit that sends star energy through the entire forest.",
+          "image_prompt": "A small stone pedestal with intricate carvings of stars and moons, a compass-shaped notch at the top glowing faintly, surrounded by blue moss",
+          "questions": ["Who carved it?", "How long did it take to make?", "What are the carvings?"]
+        },
+        {
+          "entity_id": "ent_wave_1",
+          "word_in_text": "wave",
+          "name": "The Star Wave",
+          "type": "object",
+          "lore": "When the compass connects with the pedestal, stored star energy releases in a wave that travels through the roots of every silver tree. The wave recharges the bridge, strengthens the wall gate, and makes the bell leaves sing their brightest song.",
+          "image_prompt": "A wave of blue energy expanding outward from a central point through a forest, illuminating silver tree trunks and causing leaves to glow",
+          "questions": ["How far does the wave travel?", "Does it reach the garden?", "Can you feel the wave?"]
+        },
+        {
+          "entity_id": "ent_door_1",
+          "word_in_text": "door",
+          "name": "The Permanent Door",
+          "type": "object",
+          "lore": "Before the compass was returned, the wall gate only opened temporarily. Now that the Star Hollow is recharged, the gate in the garden wall will always open for Siena. She earned a permanent passage by choosing to give back what she found rather than keep it.",
+          "image_prompt": "An arched doorway in an old stone wall, edges glowing with faint blue light, garden visible on one side and silver forest on the other",
+          "questions": ["Can Siena bring friends through the door?", "Does the door ever close?", "What will Siena do next time she visits?"]
+        }
+      ],
+      "navigation": { "next_scene_id": null }
+    }
+  ]
+}

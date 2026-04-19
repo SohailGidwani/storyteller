@@ -1,0 +1,87 @@
+{
+  "_comment": "StoryWorld Cognitive Load Config. This is the single source of truth for all age-band parameters. Claude prompt builder, frontend reader, and validators all consume this file.",
+
+  "age_bands": {
+    "4-5": {
+      "act_structure": "3_act",
+      "act_names": ["The World", "The Problem", "The Fix"],
+      "scenes": 3,
+      "sentences_per_block": 2,
+      "words_per_sentence": 8,
+      "image_break_every_n_blocks": 1,
+      "entities_per_scene": 2,
+      "lore_sentences": 1,
+      "questions_per_entity": 1,
+      "vocabulary": "simple, concrete, familiar objects and actions",
+      "flesch_kincaid_target": 1
+    },
+    "6-8": {
+      "act_structure": "5_act",
+      "act_names": ["Ordinary World", "The Call", "Rising Challenge", "The Climax", "Return"],
+      "scenes": 5,
+      "sentences_per_block": 4,
+      "words_per_sentence": 12,
+      "image_break_every_n_blocks": 2,
+      "entities_per_scene": 4,
+      "lore_sentences": 3,
+      "questions_per_entity": 3,
+      "vocabulary": "compound sentences ok, cause-and-effect, descriptive adjectives",
+      "flesch_kincaid_target": 3
+    },
+    "9+": {
+      "act_structure": "7_act",
+      "act_names": ["Ordinary World", "Call to Adventure", "Crossing the Threshold", "Trials and Allies", "The Ordeal", "The Reward", "The Return"],
+      "scenes": 7,
+      "sentences_per_block": 6,
+      "words_per_sentence": 16,
+      "image_break_every_n_blocks": 3,
+      "entities_per_scene": 5,
+      "lore_sentences": 5,
+      "questions_per_entity": 4,
+      "vocabulary": "nuance, abstract concepts, metaphor, emotional complexity",
+      "flesch_kincaid_target": 5
+    }
+  },
+
+  "adhd_modifier": {
+    "_comment": "When enabled, content stays at child's age band but delivery parameters shift DOWN one band. Age 4-5 stays unchanged (already the lowest).",
+    "affected_parameters": [
+      "sentences_per_block",
+      "image_break_every_n_blocks",
+      "entities_per_scene",
+      "lore_sentences",
+      "questions_per_entity"
+    ],
+    "unaffected_parameters": [
+      "act_structure",
+      "act_names",
+      "scenes",
+      "words_per_sentence",
+      "vocabulary",
+      "flesch_kincaid_target"
+    ],
+    "shift_map": {
+      "4-5": "4-5",
+      "6-8": "4-5",
+      "9+": "6-8"
+    }
+  },
+
+  "validation_rules": {
+    "text_block": {
+      "max_sentences": "age_bands[band].sentences_per_block",
+      "max_words_per_sentence": "age_bands[band].words_per_sentence"
+    },
+    "scene": {
+      "max_entities": "age_bands[band].entities_per_scene"
+    },
+    "entity": {
+      "max_lore_sentences": "age_bands[band].lore_sentences",
+      "max_questions": "age_bands[band].questions_per_entity"
+    },
+    "story": {
+      "total_scenes": "age_bands[band].scenes",
+      "act_count": "len(age_bands[band].act_names)"
+    }
+  }
+}
