@@ -19,6 +19,15 @@ const config: Config = {
         lora: ['var(--font-lora)', 'Georgia', 'serif'],
         nunito: ['var(--font-nunito)', 'system-ui', 'sans-serif'],
       },
+      keyframes: {
+        progress: {
+          '0%': { width: '4%' },
+          '100%': { width: '95%' },
+        },
+      },
+      animation: {
+        '[progress_60s_linear_forwards]': 'progress 60s linear forwards',
+      },
     },
   },
   plugins: [],

@@ -62,7 +62,7 @@ export default function CreateForm() {
         adhd: false,
       })
       if (photoPreview) URL.revokeObjectURL(photoPreview)
-      router.push(`/reader/${story_id}`)
+      router.push(`/generating/${story_id}`)
     } catch {
       setErrors({ submit: 'Something went wrong. Please try again.' })
       setLoading(false)
