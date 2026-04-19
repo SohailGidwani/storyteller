@@ -31,27 +31,20 @@ def _load_configs() -> tuple[dict, dict]:
     return _cognitive, _templates
 
 def age_to_band(age: int) -> str:
+    """Map age to band. Ages above 12 treated same as 12 (9+ band)."""
+    age = min(age, 12)
     if age <= 5:
         return "4-5"
     if age <= 8:
         return "6-8"
     return "9+"
 
-# Demo cap: always use the 3-scene structure to keep generation fast and showcase tight.
-# Vocabulary and Flesch-Kincaid still track the child's real age band.
-_DEMO_STRUCTURE_BAND = "4-5"
-
 
 def _get_effective_params(cognitive: dict, age_band: str, adhd: bool) -> dict:
-    # Structure (scenes, image frequency) from the demo band — always short
-    base = cognitive["age_bands"][_DEMO_STRUCTURE_BAND].copy()
-    # Override vocabulary/reading level with the child's actual age band
-    real = cognitive["age_bands"][age_band]
-    base["vocabulary"] = real["vocabulary"]
-    base["flesch_kincaid_target"] = real["flesch_kincaid_target"]
-    base["words_per_sentence"] = real["words_per_sentence"]
-    if adhd:
-        delivery_band = cognitive["adhd_modifier"]["shift_map"][_DEMO_STRUCTURE_BAND]
+    """Return story params driven by the child's actual age band."""
+    base = cognitive["age_bands"][age_band].copy()
+    if adhd and age_band != "4-5":
+        delivery_band = cognitive["adhd_modifier"]["shift_map"][age_band]
         delivery = cognitive["age_bands"][delivery_band]
         for param in cognitive["adhd_modifier"]["affected_parameters"]:
             base[param] = delivery[param]

@@ -42,42 +42,44 @@ export default function SceneView({ scene, onNext, onPrev, onEntityTap }: SceneV
 
   return (
     <div
-      className="h-full overflow-y-auto px-8 py-6"
+      className="h-full overflow-y-auto"
       style={{ touchAction: 'pan-y' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onClick={handleClick}
     >
-      {/* Scene title */}
-      <h2 className="font-lora text-sienna text-2xl mb-6 select-none">
-        {scene.title}
-      </h2>
+      {/* Constrained reading column — comfortable on iPad and laptop */}
+      <div className="max-w-2xl mx-auto px-6 py-5">
+        {/* Scene title */}
+        <h2 className="font-lora text-sienna text-xl mb-4 select-none">
+          {scene.title}
+        </h2>
 
-      {/* Text blocks in array order */}
-      <div className="space-y-4">
-        {scene.text_blocks.map((block, i) => {
-          if (block.type === 'text') {
+        {/* Text blocks in array order */}
+        <div className="space-y-3">
+          {scene.text_blocks.map((block, i) => {
+            if (block.type === 'text') {
+              return (
+                <TappableText
+                  key={i}
+                  block={block}
+                  entities={scene.clickable_entities}
+                  onEntityTap={onEntityTap}
+                />
+              )
+            }
             return (
-              <TappableText
+              <ImageSlot
                 key={i}
-                block={block}
-                entities={scene.clickable_entities}
-                onEntityTap={onEntityTap}
+                imageUrl={block.image_url}
+                alt={block.alt}
               />
             )
-          }
-          return (
-            <ImageSlot
-              key={i}
-              imageUrl={block.image_url}
-              alt={block.alt}
-            />
-          )
-        })}
-      </div>
+          })}
+        </div>
 
-      {/* Bottom spacer */}
-      <div className="h-16" />
+        <div className="h-8" />
+      </div>
     </div>
   )
 }
