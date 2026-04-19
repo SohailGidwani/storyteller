@@ -90,3 +90,31 @@ async def upload_image(image_bytes: bytes, story_id: str, filename: str) -> str:
         {"content-type": "image/png"},
     )
     return await client.storage.from_(IMAGES_BUCKET).get_public_url(path)
+
+
+async def list_stories() -> list[dict]:
+    """Return all stories as lightweight card data, newest first."""
+    client = await _get_db_client()
+    result = await client.table(STORIES_TABLE).select("id, status, story_json").order("created_at", desc=True).execute()
+    cards = []
+    for row in (result.data or []):
+        try:
+            story = json.loads(row["story_json"])
+            cards.append({
+                "story_id": row["id"],
+                "status": row["status"],
+                "title": story.get("title", "Untitled"),
+                "child_name": story.get("child_name", ""),
+                "age_band": story.get("age_band", ""),
+                "story_type": story.get("story_type", ""),
+                "photo_url": story.get("photo_url"),
+            })
+        except Exception:
+            continue
+    return cards
+
+
+async def delete_story(story_id: str) -> None:
+    """Delete a story row by ID."""
+    client = await _get_db_client()
+    await client.table(STORIES_TABLE).delete().eq("id", story_id).execute()

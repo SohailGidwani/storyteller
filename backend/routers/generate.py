@@ -1,11 +1,10 @@
-import asyncio
 import json
 from pathlib import Path
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi import APIRouter, BackgroundTasks
 
 from models.story import GenerateRequest, GenerateResponse, StoryJSON
-from services import claude_service, image_service, supabase_service
+from services import groq_service, image_service, supabase_service
 
 router = APIRouter()
 
@@ -13,7 +12,6 @@ _PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
 
 
 def _get_style_key(story_type: str) -> tuple[str, str | None]:
-    """Return (style_key, outfit) for a story type."""
     with open(_PROMPTS_DIR / "story_type_templates.json") as f:
         templates = json.load(f)
     st = templates["story_types"].get(story_type, {})
@@ -21,7 +19,7 @@ def _get_style_key(story_type: str) -> tuple[str, str | None]:
 
 
 async def _run_images_and_patch(story: dict, photo_url: str) -> None:
-    """Background task: generate images and patch URLs back onto the stored story."""
+    """Background task: generate images, patch URLs, flip status to complete."""
     try:
         import httpx
         async with httpx.AsyncClient() as http:
@@ -30,7 +28,13 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
             photo_bytes = r.content
             photo_mime = r.headers.get("content-type", "image/jpeg")
     except Exception:
-        return  # can't fetch photo — skip images silently
+        # Can't fetch photo — mark complete without images
+        story["status"] = "complete"
+        try:
+            await supabase_service.update_story(story["story_id"], story)
+        except Exception:
+            pass
+        return
 
     style_key, outfit = _get_style_key(story["story_type"])
     story_id = story["story_id"]
@@ -39,14 +43,12 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
         filename = f"{location_key}.png"
         url = await supabase_service.upload_image(img_bytes, story_id, filename)
 
-        # Patch the in-memory story dict
         if location_key == "hero":
             story["hero_image_url"] = url
             return
 
         parts = location_key.split("_", 2)
         if parts[0] == "scene":
-            # "scene_{scene_id}_img{n}" → find the nth image_slot in scene
             _, scene_id, img_tag = location_key.split("_", 2)
             img_n = int(img_tag.replace("img", "")) - 1
             count = 0
@@ -66,17 +68,23 @@ async def _run_images_and_patch(story: dict, photo_url: str) -> None:
                         if ent["entity_id"] == entity_id:
                             ent["image_url"] = url
 
-        # Persist updated story to Supabase after each image
         await supabase_service.update_story(story_id, story)
 
     await image_service.run_image_pipeline(
         story, photo_bytes, photo_mime, style_key, outfit, on_image_ready
     )
 
+    # All images done — flip to complete
+    story["status"] = "complete"
+    try:
+        await supabase_service.update_story(story_id, story)
+    except Exception:
+        pass
+
 
 @router.post("/generate", response_model=GenerateResponse)
 async def generate(req: GenerateRequest, background_tasks: BackgroundTasks) -> GenerateResponse:
-    story = await claude_service.generate_story(
+    story = await groq_service.generate_story(
         child_name=req.child_name,
         age=req.age,
         photo_url=req.photo_url,
@@ -84,15 +92,17 @@ async def generate(req: GenerateRequest, background_tasks: BackgroundTasks) -> G
         adhd=req.adhd,
     )
 
+    # Save with status "generating" — images not ready yet
+    story["status"] = "generating"
     try:
         await supabase_service.save_story(story)
     except Exception:
-        pass  # don't fail the request if DB write fails
+        pass
 
     background_tasks.add_task(_run_images_and_patch, story, req.photo_url)
 
     return GenerateResponse(
         story_id=story["story_id"],
-        status=story["status"],
+        status="generating",
         story=StoryJSON(**story),
     )
