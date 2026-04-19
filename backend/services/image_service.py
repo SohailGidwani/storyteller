@@ -117,6 +117,9 @@ async def generate_image(
         return None
 
 
+MAX_IMAGES_PER_STORY = 8
+
+
 async def run_image_pipeline(
     story: dict,
     photo_bytes: bytes,
@@ -126,23 +129,14 @@ async def run_image_pipeline(
     on_image_ready: callable,
 ) -> None:
     """
-    Generate all images for a story in order:
-    1. Hero portrait
-    2. Scene images
-    3. Entity images
-
-    Calls on_image_ready(location_key, image_bytes) for each success so
-    the caller can patch image_url back onto the story and update Supabase.
-
-    location_key format:
-      "hero"
-      "scene_{scene_id}_img{n}"
-      "entity_{scene_id}_{entity_id}"
+    Generate images in priority order: hero → scene images → entity images.
+    Hard cap at MAX_IMAGES_PER_STORY (8) so demo generation stays fast.
     """
     style_string = build_style_string(style_key, outfit)
     child_name = story.get("child_name", "Child")
+    generated = 0
 
-    # Hero portrait
+    # 1. Hero portrait
     hero_prompt = (
         f"Using this child's exact likeness and features, generate a portrait illustration. "
         f"Scene: A child standing confidently in a magical setting, looking directly at the viewer with a warm smile. "
@@ -152,13 +146,18 @@ async def run_image_pipeline(
     hero_bytes = await generate_image(hero_prompt, photo_bytes, photo_mime)
     if hero_bytes:
         await on_image_ready("hero", hero_bytes)
+        generated += 1
 
+    # 2. Scene images (highest priority after hero)
     for scene in story.get("scenes", []):
+        if generated >= MAX_IMAGES_PER_STORY:
+            break
         sid = scene["scene_id"]
         img_count = 0
-
         for block in scene.get("text_blocks", []):
             if block["type"] == "image_slot":
+                if generated >= MAX_IMAGES_PER_STORY:
+                    break
                 img_count += 1
                 scene_prompt = (
                     f"Using this child's exact likeness and features, generate an illustration. "
@@ -168,8 +167,16 @@ async def run_image_pipeline(
                 img_bytes = await generate_image(scene_prompt, photo_bytes, photo_mime)
                 if img_bytes:
                     await on_image_ready(f"scene_{sid}_img{img_count}", img_bytes)
+                    generated += 1
 
+    # 3. Entity images — only if budget remains
+    for scene in story.get("scenes", []):
+        if generated >= MAX_IMAGES_PER_STORY:
+            break
+        sid = scene["scene_id"]
         for ent in scene.get("clickable_entities", []):
+            if generated >= MAX_IMAGES_PER_STORY:
+                break
             ent_prompt = (
                 f"Generate an illustration of this object/creature/location. "
                 f"Subject: {ent['image_prompt']} "
@@ -178,3 +185,4 @@ async def run_image_pipeline(
             img_bytes = await generate_image(ent_prompt, None)
             if img_bytes:
                 await on_image_ready(f"entity_{sid}_{ent['entity_id']}", img_bytes)
+                generated += 1
