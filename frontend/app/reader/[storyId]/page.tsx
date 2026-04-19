@@ -147,6 +147,24 @@ export default function ReaderPage() {
 
   const { story, currentSceneIndex, activeEntity } = state
 
+  // Arrow key navigation — must be before any early return (Rules of Hooks)
+  useEffect(() => {
+    if (!story) return
+    const scenes = story.scenes
+    const isLast = scenes[currentSceneIndex]?.navigation.next_scene_id === null
+
+    function onKey(e: KeyboardEvent) {
+      if (activeEntity) return
+      if (e.key === 'ArrowRight') {
+        if (isLast) router.push('/')
+        else dispatch({ type: 'NEXT_SCENE' })
+      }
+      if (e.key === 'ArrowLeft') dispatch({ type: 'PREV_SCENE' })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [story, activeEntity, currentSceneIndex, router])
+
   if (!story) return <ReaderSkeleton />
 
   const currentScene = story.scenes[currentSceneIndex]
@@ -159,17 +177,6 @@ export default function ReaderPage() {
       dispatch({ type: 'NEXT_SCENE' })
     }
   }
-
-  // Arrow key navigation — only when side panel is closed
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (activeEntity) return // don't navigate while panel is open
-      if (e.key === 'ArrowRight') handleNext()
-      if (e.key === 'ArrowLeft') dispatch({ type: 'PREV_SCENE' })
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [activeEntity, currentSceneIndex, isLastScene])
 
   return (
     <div className="h-screen bg-cream flex flex-col overflow-hidden">
