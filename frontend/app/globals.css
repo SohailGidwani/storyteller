@@ -1,6 +1,17 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
+@theme {
+  --color-cream: #FAF7F2;
+  --color-parchment: #EDE0CC;
+  --color-ink: #2C2317;
+  --color-amber: #C17E3C;
+  --color-sienna: #8B3A1A;
+  --color-panel: #FDF5EB;
+  --font-family-lora: var(--font-lora), Georgia, serif;
+  --font-family-nunito: var(--font-nunito), system-ui, sans-serif;
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
