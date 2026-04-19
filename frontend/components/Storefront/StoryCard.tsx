@@ -47,15 +47,20 @@ export default function StoryCard({ story, onDeleted }: StoryCardProps) {
             : 'bg-parchment hover:scale-[1.02] active:scale-[0.98]'
         }`}
       >
-        {/* Cover art or placeholder */}
-        {story.photo_url ? (
+        {/* Cover art — hero portrait fills the card */}
+        {story.cover_image_url ? (
           <img
-            src={story.photo_url}
-            alt={story.child_name}
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
+            src={story.cover_image_url}
+            alt={story.title}
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           <span className="absolute top-4 right-4 text-4xl">{icon}</span>
+        )}
+
+        {/* Gradient overlay so text stays readable over the image */}
+        {story.cover_image_url && (
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
         )}
 
         {isGenerating && (
@@ -65,10 +70,10 @@ export default function StoryCard({ story, onDeleted }: StoryCardProps) {
         )}
 
         <div className="relative z-10">
-          <span className="font-nunito text-xs text-amber uppercase tracking-wide">
+          <span className={`font-nunito text-xs uppercase tracking-wide ${story.cover_image_url ? 'text-amber' : 'text-amber'}`}>
             {story.child_name} · Age {story.age_band}
           </span>
-          <h3 className="font-lora text-sienna text-xl leading-snug mt-1">
+          <h3 className={`font-lora text-xl leading-snug mt-1 ${story.cover_image_url ? 'text-white' : 'text-sienna'}`}>
             {story.title}
           </h3>
         </div>

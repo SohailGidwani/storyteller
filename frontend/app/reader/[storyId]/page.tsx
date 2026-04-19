@@ -160,6 +160,17 @@ export default function ReaderPage() {
     }
   }
 
+  // Arrow key navigation — only when side panel is closed
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (activeEntity) return // don't navigate while panel is open
+      if (e.key === 'ArrowRight') handleNext()
+      if (e.key === 'ArrowLeft') dispatch({ type: 'PREV_SCENE' })
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [activeEntity, currentSceneIndex, isLastScene])
+
   return (
     <div className="h-screen bg-cream flex flex-col overflow-hidden">
       {/* Title bar */}

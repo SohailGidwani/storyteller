@@ -108,6 +108,7 @@ async def list_stories() -> list[dict]:
                 "age_band": story.get("age_band", ""),
                 "story_type": story.get("story_type", ""),
                 "photo_url": story.get("photo_url"),
+                "cover_image_url": story.get("hero_image_url"),
             })
         except Exception:
             continue

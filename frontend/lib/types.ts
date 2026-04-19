@@ -63,4 +63,5 @@ export interface StoryCard {
   age_band: AgeBand
   story_type: StoryType
   photo_url: string | null
+  cover_image_url: string | null
 }
