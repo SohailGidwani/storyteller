@@ -2,8 +2,13 @@ import type { GenerateRequest, StoryCard, StoryJSON, StoryStatus } from './types
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
 
+const BASE_HEADERS: Record<string, string> = {
+  'ngrok-skip-browser-warning': 'true',
+}
+
 export async function getStory(storyId: string): Promise<StoryJSON> {
   const res = await fetch(`${BASE_URL}/story/${storyId}`, {
+    headers: BASE_HEADERS,
     signal: AbortSignal.timeout(10_000),
   })
   if (!res.ok) throw new Error(`getStory failed: ${res.status}`)
@@ -17,7 +22,7 @@ export async function generateStory(
 ): Promise<{ story_id: string; status: StoryStatus; story?: StoryJSON }> {
   const res = await fetch(`${BASE_URL}/generate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...BASE_HEADERS, 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
     signal: AbortSignal.timeout(30_000),
   })
@@ -30,6 +35,7 @@ export async function uploadPhoto(file: File): Promise<{ photo_url: string }> {
   form.append('file', file)
   const res = await fetch(`${BASE_URL}/upload-photo`, {
     method: 'POST',
+    headers: BASE_HEADERS,
     body: form,
     signal: AbortSignal.timeout(30_000),
   })
@@ -38,13 +44,14 @@ export async function uploadPhoto(file: File): Promise<{ photo_url: string }> {
 }
 
 export async function healthCheck(): Promise<{ ok: true }> {
-  const res = await fetch(`${BASE_URL}/health`)
+  const res = await fetch(`${BASE_URL}/health`, { headers: BASE_HEADERS })
   if (!res.ok) throw new Error('Backend unreachable')
   return res.json()
 }
 
 export async function listStories(): Promise<StoryCard[]> {
   const res = await fetch(`${BASE_URL}/stories`, {
+    headers: BASE_HEADERS,
     signal: AbortSignal.timeout(10_000),
   })
   if (!res.ok) return []
@@ -54,6 +61,7 @@ export async function listStories(): Promise<StoryCard[]> {
 export async function deleteStory(storyId: string): Promise<void> {
   await fetch(`${BASE_URL}/story/${storyId}`, {
     method: 'DELETE',
+    headers: BASE_HEADERS,
     signal: AbortSignal.timeout(10_000),
   })
 }
